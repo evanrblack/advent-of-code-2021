@@ -24,7 +24,7 @@ end
 
 example_sonar_sweep = SonarSweep.new('day_01_example_input.txt')
 sonar_sweep = SonarSweep.new('day_01_input.txt')
-puts "Part 01 (Example): #{example_sonar_sweep.depth_increases}"
-puts "Part 01: #{sonar_sweep.depth_increases}"
-puts "Part 02 (Example): #{example_sonar_sweep.windowed_depth_increases(3)}"
-puts "Part 02: #{sonar_sweep.windowed_depth_increases(3)}"
+puts "Part 1 (Example): #{example_sonar_sweep.depth_increases}"
+puts "Part 1: #{sonar_sweep.depth_increases}"
+puts "Part 2 (Example): #{example_sonar_sweep.windowed_depth_increases(3)}"
+puts "Part 2: #{sonar_sweep.windowed_depth_increases(3)}"
