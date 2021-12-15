@@ -117,5 +117,4 @@ end
 run('Part 1 (Example)', 'day_15_example_input.txt')
 run('Part 1', 'day_15_input.txt')
 run('Part 2 (Example)', 'day_15_example_input.txt', 5)
-# Pretty slow. Heuristics or priority queue?
 run('Part 2', 'day_15_input.txt', 5)
