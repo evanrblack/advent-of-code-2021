@@ -1,6 +1,26 @@
 require 'set'
 require 'stringio'
 
+class PriorityQueue
+  def initialize
+    @q = []
+  end
+
+  def pop
+    @q.pop&.at(0)
+  end
+
+  def push(value, priority)
+    index = @q.bsearch_index { |_, p| p >= priority }
+    @q.insert(index || @q.size, [value, priority])
+    self
+  end
+
+  def empty?
+    @q.empty?
+  end
+end
+
 class RiskyCave
   def initialize(filename, multiplier = 1)
     original_risk_levels = {}
@@ -36,32 +56,32 @@ class RiskyCave
     exit_pos = [@width - 1, @height - 1]
 
     visited = Set.new()
-    queue = Set.new()
+    queue = PriorityQueue.new()
     path_risk = risk_levels_keys.map { |pos| [pos, Float::INFINITY] }.to_h
 
-    queue.add(entry_pos)
-    # path_risk[entry_pos] = @risk_levels[entry_pos]
+    queue.push(entry_pos, 0)
     path_risk[entry_pos] = 0
 
     until queue.empty?
       # if visited.size % 1000 == 0
       #   puts '%.2f' % (visited.size.to_f / path_risk.size)
       # end
-
-      current_pos = queue.min_by do |pos|
-        path_risk[pos]
-      end
+      current_pos = queue.pop()
+      next if visited.include?(current_pos)
+      break if current_pos == exit_pos
+      visited.add(current_pos)
       current_risk = path_risk[current_pos]
 
       unvisited_neighbors = neighbors(current_pos).reject { |n| visited.include?(n) }
+      pushed = false
       unvisited_neighbors.each do |neighbor|
         neighbor_risk = current_risk + @risk_levels[neighbor]
-        path_risk[neighbor] = neighbor_risk if neighbor_risk < path_risk[neighbor]
-        queue.add(neighbor)
+        if neighbor_risk < path_risk[neighbor]
+          pushed = true
+          path_risk[neighbor] = neighbor_risk
+          queue.push(neighbor, -path_risk[neighbor])
+        end
       end
-
-      visited.add(current_pos)
-      queue.delete(current_pos)
     end
 
     path_risk[exit_pos]
